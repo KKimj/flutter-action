@@ -43,13 +43,13 @@ runs:
         MANIFEST_BASE_URL="https://storage.googleapis.com/flutter_infra_release/releases"
         MANIFEST_URL="$MANIFEST_BASE_URL/releases_$OS_NAME.json"
         echo $OS_NAME
-        releases_manifest=$(curl --silent --connect-timeout 15 --retry 5 $MANIFEST_URL)
+        # releases_manifest=$(curl --silent --connect-timeout 15 --retry 5 $MANIFEST_URL)
         # echo $releases_manifest
-        if [[ $OS_NAME == windows ]]; then
-          alias shasum='sha256sum'
-        fi
-        FLUTTER_RELEASES_JSON_HASH=$($releases_manifest | shasum | cut -c -10)
-        echo $FLUTTER_RELEASES_JSON_HASH
+        # if [[ $OS_NAME == windows ]]; then
+        #   alias shasum='sha256sum'
+        # fi
+        # FLUTTER_RELEASES_JSON_HASH=$($releases_manifest | shasum | cut -c -10)
+        # echo $FLUTTER_RELEASES_JSON_HASH
         # echo "FLUTTER_RELEASES_JSON_HASH=(curl https://storage.googleapis.com/flutter_infra_release/releases/releases_linux.json | shasum | cut -c -10)" >>$GITHUB_ENV
     - if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v3
