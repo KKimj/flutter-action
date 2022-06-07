@@ -44,7 +44,7 @@ runs:
         echo $OS_NAME
         # releases_manifest=$(curl --silent --connect-timeout 15 --retry 5 $MANIFEST_URL)
         # echo $releases_manifest
-        if [[ $OS_NAME == windows ]]; then
+        if [[ $OS_NAME == 'windows' ]]; then
           alias shasum='sha256sum'
         fi
         shasum --version
