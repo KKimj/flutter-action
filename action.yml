@@ -37,7 +37,7 @@ runs:
     - if: ${{ inputs.cache == 'true' && inputs.false-positive-cache == 'true' }}
       shell: bash
       run: |
-        sha1sum --version
+        # sha1sum --version
         sha256sum --version
         OS_NAME=$(echo ${{ runner.os }} | awk '{print tolower($0)}')
         MANIFEST_BASE_URL="https://storage.googleapis.com/flutter_infra_release/releases"
