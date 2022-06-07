@@ -28,13 +28,21 @@ inputs:
     description: 'The architecture of Flutter SDK executable (x64 or arm64)'
     required: false
     default: ${{ runner.arch }}
+  false-positive-cache:
+    description: 'Ensure up-to-date Flutter SDK but, Occuring False Positive Cache-hit'
+    required: false
+    default: false
 runs:
   using: 'composite'
   steps:
+    - if: ${{ inputs.cache == 'true' && inputs.false-positive-cache }}
+      run: |
+        OS_NAME=$(echo ${{ runner.os }} | awk '{print tolower($0)}')
+        echo "FLUTTER_RELEASES_JSON_HASH=curl https://storage.googleapis.com/flutter_infra_release/releases/releases_linux.json | shasum | cut -c -10" >>$GITHUB_ENV
     - if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v3
       with:
         path: ${{ inputs.cache-path }}
-        key: ${{ inputs.cache-key }}-${{ runner.os }}-${{ inputs.architecture }}-${{ inputs.channel }}-${{ inputs.flutter-version }}
+        key: ${{ inputs.cache-key }}-${{ runner.os }}-${{ inputs.architecture }}-${{ inputs.channel }}-${{ inputs.flutter-version }}-${{ github.FLUTTER_RELEASES_JSON_HASH }}
     - run: $GITHUB_ACTION_PATH/setup.sh -c "${{ inputs.cache-path }}" ${{ inputs.channel }} ${{ inputs.flutter-version }} ${{ inputs.architecture }}
       shell: bash
