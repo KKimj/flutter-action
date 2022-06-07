@@ -41,11 +41,19 @@ runs:
         manifest_base_url="https://storage.googleapis.com/flutter_infra_release/releases"
         manifest_url="$manifest_base_url/releases_$os_name.json"
         releases_manifest=$(curl --silent --connect-timeout 15 --retry 5 $manifest_url)
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          shopt -s expand_aliases
+          alias shasum='sha256sum'
+          sha256sum --version
+          shasum --version
+          echo "$RUNNER_OS" == "Windows"
+        fi
         if [[ $OS_NAME == 'windows' ]]; then
           shopt -s expand_aliases
           alias shasum='sha256sum'
           sha256sum --version
           shasum --version
+          echo $OS_NAME == 'windows'
         fi
         echo "manifest_hash=$(echo -n $releases_manifest | shasum | cut -c -7)" >>$GITHUB_ENV
     - if: ${{ inputs.cache == 'true' }}
