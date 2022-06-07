@@ -50,11 +50,12 @@ runs:
         echo -n $release_manifest | shasum | cut -c -10
         FLUTTER_RELEASES_JSON_HASH=$(echo -n $release_manifest | shasum | cut -c -10)
         echo $FLUTTER_RELEASES_JSON_HASH
-        # echo "FLUTTER_RELEASES_JSON_HASH=(curl https://storage.googleapis.com/flutter_infra_release/releases/releases_linux.json | shasum | cut -c -10)" >>$GITHUB_ENV
+        echo $MANIFEST_URL
+        echo $releases_manifest
     - if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v3
       with:
         path: ${{ inputs.cache-path }}
-        key: ${{ inputs.cache-key }}-${{ runner.os }}-${{ inputs.architecture }}-${{ inputs.channel }}-${{ inputs.flutter-version }}-${{ github.FLUTTER_RELEASES_JSON_HASH }}
+        key: ${{ inputs.cache-key }}-${{ runner.os }}-${{ inputs.architecture }}-${{ inputs.channel }}-${{ inputs.flutter-version }}-$FLUTTER_RELEASES_JSON_HASH
     - run: $GITHUB_ACTION_PATH/setup.sh -c "${{ inputs.cache-path }}" ${{ inputs.channel }} ${{ inputs.flutter-version }} ${{ inputs.architecture }}
       shell: bash
