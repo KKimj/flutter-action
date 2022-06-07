@@ -44,6 +44,8 @@ runs:
         if [[ $OS_NAME == 'windows' ]]; then
           shopt -s expand_aliases
           alias shasum='sha256sum'
+          sha256sum --version
+          shasum --version
         fi
         echo "manifest_hash=$(echo -n $releases_manifest | shasum | cut -c -7)" >>$GITHUB_ENV
     - if: ${{ inputs.cache == 'true' }}
