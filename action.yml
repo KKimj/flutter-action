@@ -48,10 +48,8 @@ runs:
         fi
         # shasum --version
         echo -n $release_manifest | shasum | cut -c -10
-        FLUTTER_RELEASES_JSON_HASH=$(echo -n $release_manifest | shasum | cut -c -10)
-        echo $FLUTTER_RELEASES_JSON_HASH
-        echo $MANIFEST_URL
-        echo $releases_manifest
+        echo "FLUTTER_RELEASES_JSON_HASH=$(echo -n $release_manifest | shasum | cut -c -10)" >>$GITHUB_ENV
+        
     - if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v3
       with:
