@@ -31,11 +31,10 @@ inputs:
   false-positive-cache:
     description: 'Ensure up-to-date Flutter SDK but, Occuring False Positive Cache-hit'
     required: false
-    default: false
 runs:
   using: 'composite'
   steps:
-    - if: ${{ inputs.cache == 'true' && inputs.false-positive-cache }}
+    - if: ${{ inputs.cache == 'true' && inputs.false-positive-cache == 'true' }}
       run: |
         OS_NAME=$(echo ${{ runner.os }} | awk '{print tolower($0)}')
         echo "FLUTTER_RELEASES_JSON_HASH=curl https://storage.googleapis.com/flutter_infra_release/releases/releases_linux.json | shasum | cut -c -10" >>$GITHUB_ENV
