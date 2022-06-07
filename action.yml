@@ -41,7 +41,7 @@ runs:
         manifest_base_url="https://storage.googleapis.com/flutter_infra_release/releases"
         manifest_url="$manifest_base_url/releases_$os_name.json"
         releases_manifest=$(curl --silent --connect-timeout 15 --retry 5 $manifest_url)
-        if [[ $OS_NAME == 'windows' ]]; then
+        if [[ $os_name == 'windows' ]]; then
           echo "manifest_hash=$(echo -n $releases_manifest | sha256sum | cut -c -7)" >>$GITHUB_ENV
         else
           echo "manifest_hash=$(echo -n $releases_manifest | shasum -a 256 | cut -c -7)" >>$GITHUB_ENV
