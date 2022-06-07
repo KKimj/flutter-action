@@ -47,7 +47,8 @@ runs:
           alias shasum='sha256sum'
         fi
         # shasum --version
-        FLUTTER_RELEASES_JSON_HASH=$($releases_manifest | shasum | cut -c -10)
+        echo -n $release_manifest | shasum | cut -c -10
+        FLUTTER_RELEASES_JSON_HASH=$(echo -n $release_manifest | shasum | cut -c -10)
         echo $FLUTTER_RELEASES_JSON_HASH
         # echo "FLUTTER_RELEASES_JSON_HASH=(curl https://storage.googleapis.com/flutter_infra_release/releases/releases_linux.json | shasum | cut -c -10)" >>$GITHUB_ENV
     - if: ${{ inputs.cache == 'true' }}
