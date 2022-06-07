@@ -47,6 +47,7 @@ runs:
         if [[ $OS_NAME == 'windows' ]]; then
           echo 'Branch Check!'
           sha256sum --version
+          shopt -s expand_aliases
           alias shasum='sha256sum'
         fi
         shasum --version
