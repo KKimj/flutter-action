@@ -38,19 +38,19 @@ runs:
       shell: bash
       continue-on-error: true
       run: |
-        OS_NAME=$(echo ${{ runner.os }} | awk '{print tolower($0)}')
-        MANIFEST_BASE_URL="https://storage.googleapis.com/flutter_infra_release/releases"
-        MANIFEST_URL="$MANIFEST_BASE_URL/releases_$OS_NAME.json"
-        releases_manifest=$(curl --silent --connect-timeout 15 --retry 5 $MANIFEST_URL)
+        os_name=$(echo ${{ runner.os }} | awk '{print tolower($0)}')
+        manifest_base_url="https://storage.googleapis.com/flutter_infra_release/releases"
+        manifest_url="$manifest_base_url/releases_$os_name.json"
+        releases_manifest=$(curl --silent --connect-timeout 15 --retry 5 $manifest_url)
         if [[ $OS_NAME == 'windows' ]]; then
           shopt -s expand_aliases
           alias shasum='sha256sum'
         fi
-        echo "FLUTTER_RELEASES_JSON_HASH=$(echo -n $release_manifest | shasum | cut -c -7)" >>$GITHUB_ENV       
+        echo "manifest_hash=$(echo -n $release_manifest | shasum | cut -c -7)" >>$GITHUB_ENV       
     - if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v3
       with:
         path: ${{ inputs.cache-path }}
-        key: ${{ inputs.cache-key }}-${{ runner.os }}-${{ inputs.architecture }}-${{ inputs.channel }}-${{ inputs.flutter-version }}-${{ env.FLUTTER_RELEASES_JSON_HASH }}
+        key: ${{ inputs.cache-key }}-${{ runner.os }}-${{ inputs.architecture }}-${{ inputs.channel }}-${{ inputs.flutter-version }}-${{ env.manifest_hash }}
     - run: $GITHUB_ACTION_PATH/setup.sh -c "${{ inputs.cache-path }}" ${{ inputs.channel }} ${{ inputs.flutter-version }} ${{ inputs.architecture }}
       shell: bash
